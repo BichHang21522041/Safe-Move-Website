@@ -10,19 +10,12 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div style={containerStyle}>
-      {/* <header style={headerStyle}>
-        <h1>Website Header</h1>
-      </header> */}
       <Sidebar style={sideBarStyle} />
       <main style={mainStyle}>{children}</main>
-      {/* <footer style={footerStyle}>
-        <p>Website Footer © 2024</p>
-      </footer> */}
     </div>
   );
 };
 
-// Correctly typed CSS styles using React.CSSProperties
 const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
@@ -34,13 +27,14 @@ const containerStyle: React.CSSProperties = {
 };
 
 const sideBarStyle: CSSProperties = {
-  // backgroundColor: "red",
+  backgroundColor: "pink",
+  width: '10vw',
+  minWidth: 250,
 };
 
 const mainStyle: React.CSSProperties = {
   flex: 1,
   padding: "20px",
-  // backgroundColor: "pink",
 };
 
 export default Layout;
