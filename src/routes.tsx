@@ -19,7 +19,7 @@ export interface IRoute {
   children?: { path: string; component: ReactNode }[];
 }
 
-const routes: IRoute[] = [
+export const routes: IRoute[] = [
   {
     name: "Dashboard",
     icon: <MdOutlineDashboard />,
@@ -34,7 +34,7 @@ const routes: IRoute[] = [
   },
 ];
 
-function renderRoutes() {
+function MainRoutes() {
   return (
     <Router>
       <div>
@@ -59,19 +59,7 @@ function renderRoutes() {
         </Routing>
       </div>
     </Router>
-    // routes.map((route, index) => (
-    //   <Route path={route.path} element={route.component} key={index}>
-    //     {route.children &&
-    //       route.children.map((item, idx) => (
-    //         <Route
-    //           path={item.path}
-    //           element={item.component}
-    //           key={`${index}-${idx}`}
-    //         />
-    //       ))}
-    //   </Route>
-    // ))
   );
 }
 
-export default renderRoutes;
+export default MainRoutes;

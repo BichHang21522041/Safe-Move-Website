@@ -1,5 +1,6 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 import { Sidebar } from "./SideBar";
+import BG from "../images/BG.png";
 
 // Define a simple layout type for flexibility
 interface LayoutProps {
@@ -9,14 +10,14 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div style={containerStyle}>
-      <header style={headerStyle}>
+      {/* <header style={headerStyle}>
         <h1>Website Header</h1>
-      </header>
-      <Sidebar/>
+      </header> */}
+      <Sidebar style={sideBarStyle} />
       <main style={mainStyle}>{children}</main>
-      <footer style={footerStyle}>
+      {/* <footer style={footerStyle}>
         <p>Website Footer © 2024</p>
-      </footer>
+      </footer> */}
     </div>
   );
 };
@@ -24,27 +25,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 // Correctly typed CSS styles using React.CSSProperties
 const containerStyle: React.CSSProperties = {
   display: "flex",
-  flexDirection: "column",
+  flexDirection: "row",
   minHeight: "100vh",
+  gap: 10,
+  backgroundImage: `url(${BG})`,
+  backgroundSize: "cover",
+  backgroundPosition: "center",
 };
 
-const headerStyle: React.CSSProperties = {
-  backgroundColor: "#282c34",
-  color: "white",
-  padding: "20px",
-  textAlign: "center",
+const sideBarStyle: CSSProperties = {
+  // backgroundColor: "red",
 };
 
 const mainStyle: React.CSSProperties = {
   flex: 1,
   padding: "20px",
-};
-
-const footerStyle: React.CSSProperties = {
-  backgroundColor: "#282c34",
-  color: "white",
-  textAlign: "center",
-  padding: "10px",
+  // backgroundColor: "pink",
 };
 
 export default Layout;
