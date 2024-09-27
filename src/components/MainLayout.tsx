@@ -40,28 +40,25 @@ const sideBarStyle: CSSProperties = {
 
 const mainStyle: React.CSSProperties = {
   flex: 1,
-  background: 'white',
-  display: 'flex',
-  overflow: 'auto',
+  display: "flex",
+  overflow: "auto",
 };
 
 const headerStyle: React.CSSProperties = {
-  backgroundColor: 'pink',
-  height: '10%',
-  display:'flex',
-  justifyContent: 'flex-end', 
-  alignItems: 'center',
-  gap: '50px',
+  height: "5%",
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  gap: "50px",
 };
 
 const contentStyle: React.CSSProperties = {
-  backgroundColor: 'yellow',
-  width: '100%',
-  height: '100%',
+  width: "100%",
+  height: "100%",
   flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  paddingRight: '50px'
-}
+  display: "flex",
+  flexDirection: "column",
+  paddingRight: "50px",
+};
 
 export default Layout;
