@@ -36,29 +36,11 @@ export const routes: IRoute[] = [
 
 function MainRoutes() {
   return (
-    <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/sign-in">Sign in</Link>
-            </li>
-            <li>
-              <Link to="/map">Map</Link>
-            </li>
-          </ul>
-        </nav>
-
         <Routing>
           <Route path="/" element={<Dashboard />} />
           <Route path="/map" element={<Map />} />
           <Route path="/sign-in" element={<SignIn />} />
         </Routing>
-      </div>
-    </Router>
   );
 }
 
