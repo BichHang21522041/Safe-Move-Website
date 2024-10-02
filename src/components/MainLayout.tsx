@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { Sidebar } from "./SideBar";
 import BG from "../images/BG.png";
 import { Header } from "./Header";
@@ -13,8 +13,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div style={containerStyle}>
       <Sidebar style={sideBarStyle} />
       <div style={contentStyle}>
-        <Header style={headerStyle}/>
-      <main style={mainStyle}>{children}</main>
+        <Header style={headerStyle} />
+        <main style={mainStyle}>{children}</main>
       </div>
     </div>
   );
@@ -24,18 +24,18 @@ const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
   minHeight: "100vh",
-  gap: '50px',
+  gap: "50px",
   backgroundImage: `url(${BG})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
-  height:'100vh'
+  height: "100vh",
 };
 
 const sideBarStyle: CSSProperties = {
-  backgroundColor: '#464667',
-  width: '10vw',
+  backgroundColor: "#464667",
+  width: "10vw",
   minWidth: 250,
-  color: 'white'
+  color: "white",
 };
 
 const mainStyle: React.CSSProperties = {

@@ -1,4 +1,4 @@
-import { CardItem } from "./CardItem"
+import { CardItem } from "./CardItem";
 
 export const Overview = () => {
   return (
@@ -28,4 +28,4 @@ export const Overview = () => {
       </div>
     </div>
   );
-}
+};

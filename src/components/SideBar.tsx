@@ -31,7 +31,7 @@ export const Sidebar = (props: {
           flexDirection: "column",
         }}
       >
-        <Link to="/" style={{textDecoration: 'none', color: 'inherit'}}>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <div
             style={{
               flexDirection: "row",
@@ -47,7 +47,7 @@ export const Sidebar = (props: {
             <div>Dashboard</div>
           </div>
         </Link>
-        <Link to="/map" style={{textDecoration: 'none', color: 'inherit'}}>
+        <Link to="/map" style={{ textDecoration: "none", color: "inherit" }}>
           <div
             style={{
               flexDirection: "row",
@@ -62,7 +62,7 @@ export const Sidebar = (props: {
             <div>Map</div>
           </div>
         </Link>
-        <Link to="/" style={{textDecoration: 'none', color: 'inherit'}}>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <div
             style={{
               flexDirection: "row",
@@ -78,7 +78,14 @@ export const Sidebar = (props: {
           </div>
         </Link>
       </div>
-      <div style={{ height: "20%", flex: 1, display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          height: "20%",
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <div
           style={{
             flexDirection: "row",
