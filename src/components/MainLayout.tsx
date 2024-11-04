@@ -1,7 +1,7 @@
 import { CSSProperties } from "react";
-import { Sidebar } from "./SideBar";
-import BG from "../images/BG.png";
+import { Colors } from "../utils/colors";
 import { Header } from "./Header";
+import { Sidebar } from "./SideBar";
 
 // Define a simple layout type for flexibility
 interface LayoutProps {
@@ -13,8 +13,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div style={containerStyle}>
       <Sidebar style={sideBarStyle} />
       <div style={contentStyle}>
-        <Header style={headerStyle} />
-        <main style={mainStyle}>{children}</main>
+        <Header style={headerStyle} title="Camera Management" />
+        <div style={mainStyle}>{children}</div>
       </div>
     </div>
   );
@@ -23,42 +23,45 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 const containerStyle: React.CSSProperties = {
   display: "flex",
   flexDirection: "row",
-  minHeight: "100vh",
-  gap: "50px",
-  backgroundImage: `url(${BG})`,
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  height: "100vh",
+  backgroundColor: Colors.backgroundColor,
+  height: "100%",
 };
 
 const sideBarStyle: CSSProperties = {
-  backgroundColor: "#464667",
-  width: "10vw",
+  width: "20vw",
   minWidth: 250,
   color: "white",
+  backgroundColor: Colors.white,
+  display: "flex",
+  flexDirection: "column",
+  gap: "20px",
+  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
 };
 
 const mainStyle: React.CSSProperties = {
+  backgroundColor: Colors.white,
   flex: 1,
-  display: "flex",
-  overflow: "auto",
+  borderWidth: 1,
+  borderRadius: 10,
+  padding: "10px 20px 10px 20px",
+  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+  overflow: "scroll",
+  overflowX: "hidden",
 };
 
 const headerStyle: React.CSSProperties = {
   height: "5%",
   display: "flex",
-  justifyContent: "flex-end",
+  justifyContent: "space-between",
   alignItems: "center",
-  gap: "50px",
 };
 
 const contentStyle: React.CSSProperties = {
-  width: "100%",
-  height: "100%",
-  flex: 1,
   display: "flex",
   flexDirection: "column",
-  paddingRight: "50px",
+  gap: "20px",
+  padding: "30px 50px",
+  width: "100%",
 };
 
 export default Layout;
