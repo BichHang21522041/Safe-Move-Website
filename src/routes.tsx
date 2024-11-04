@@ -5,7 +5,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
-import Dashboard from "./views/dashboard";
+import Dashboard from "./views/camera";
 import Map from "./views/map";
 import SignIn from "./views/signIn";
 import { MdOutlineDashboard } from "react-icons/md";
@@ -36,11 +36,11 @@ export const routes: IRoute[] = [
 
 function MainRoutes() {
   return (
-        <Routing>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/map" element={<Map />} />
-          <Route path="/sign-in" element={<SignIn />} />
-        </Routing>
+    <Routing>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/map" element={<Map />} />
+      <Route path="/sign-in" element={<SignIn />} />
+    </Routing>
   );
 }
 

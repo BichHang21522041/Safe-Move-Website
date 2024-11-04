@@ -1,13 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Dashboard from "./views/dashboard";
-import Map from "./views/map";
-import SignIn from "./views/signIn";
+import AuthLayout from "./components/AuthLayout";
 import Layout from "./components/MainLayout";
 import MainRoutes from "./routes";
+import { useGlobalContext } from "./utils/globalContext";
 
-function App() {
-  return <Layout children={<MainRoutes />} />;
-}
+const App = () => {
+  const { isAuthenticated } = useGlobalContext();
+  return isAuthenticated ? (
+    <Layout children={<MainRoutes />} />
+  ) : (
+    <AuthLayout />
+  );
+};
 
 export default App;

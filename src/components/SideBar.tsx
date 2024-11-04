@@ -1,8 +1,11 @@
-import { CiSettings } from "react-icons/ci";
-import { IoIosLogOut } from "react-icons/io";
+import { useState } from "react";
+import { BiCctv } from "react-icons/bi";
 import { IoMapOutline } from "react-icons/io5";
-import { MdOutlineDashboard } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { RiUserVoiceLine } from "react-icons/ri";
+import { Colors } from "../utils/colors";
+import { ETabName } from "../utils/enum";
+import { Size } from "../utils/size";
+import { LinkTab } from "./LinkTab";
 
 export const Sidebar = (props: {
   open?: boolean;
@@ -10,6 +13,7 @@ export const Sidebar = (props: {
   style?: React.CSSProperties;
 }) => {
   const { open, onClose, style } = props;
+  const [selectedTab, setSelectedTab] = useState<ETabName>(ETabName.CAMERA);
   return (
     <div style={style}>
       <div
@@ -18,86 +22,52 @@ export const Sidebar = (props: {
           justifyContent: "center",
           alignItems: "center",
           display: "flex",
-        }}
-      >
-        <img src={require("../images/logo.png")} alt="" />
-      </div>
-      <div
-        style={{
-          height: "60%",
-          alignItems: "flex-start",
-          display: "flex",
-          gap: 40,
-          flexDirection: "column",
-        }}
-      >
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div
-            style={{
-              flexDirection: "row",
-              fontSize: "15px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "20px",
-              marginLeft: "50px",
-            }}
-          >
-            <MdOutlineDashboard size={20} />
-            <div>Dashboard</div>
-          </div>
-        </Link>
-        <Link to="/map" style={{ textDecoration: "none", color: "inherit" }}>
-          <div
-            style={{
-              flexDirection: "row",
-              fontSize: "15",
-              display: "flex",
-              justifyContent: "center",
-              gap: 20,
-              marginLeft: 50,
-            }}
-          >
-            <IoMapOutline size={20} />
-            <div>Map</div>
-          </div>
-        </Link>
-        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-          <div
-            style={{
-              flexDirection: "row",
-              fontSize: "15",
-              display: "flex",
-              justifyContent: "center",
-              gap: 20,
-              marginLeft: 50,
-            }}
-          >
-            <CiSettings size={20} />
-            <div>Setting</div>
-          </div>
-        </Link>
-      </div>
-      <div
-        style={{
-          height: "20%",
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
+          backgroundColor: "white",
+          borderBottomColor: Colors.echoBlue,
+          borderBottomWidth: 1,
+          borderBottomStyle: "solid",
         }}
       >
         <div
           style={{
-            flexDirection: "row",
-            fontSize: "15",
-            display: "flex",
-            gap: 20,
-            marginLeft: 50,
+            color: Colors.black,
+            fontSize: Size.XXXL,
+            fontWeight: "bold",
           }}
         >
-          <IoIosLogOut size={20} />
-          <div>Logout</div>
+          SAFEMOVE
         </div>
+      </div>
+      <div
+        style={{
+          alignItems: "flex-start",
+          display: "flex",
+          gap: 20,
+          flexDirection: "column",
+          height: "80%",
+        }}
+      >
+        <LinkTab
+          link="/"
+          icon={BiCctv}
+          title="Camera"
+          isActive={selectedTab === ETabName.CAMERA}
+          onSelect={() => setSelectedTab(ETabName.CAMERA)}
+        />
+        <LinkTab
+          link="/"
+          icon={IoMapOutline}
+          title="Map"
+          isActive={selectedTab === ETabName.MAP}
+          onSelect={() => setSelectedTab(ETabName.MAP)}
+        />
+        <LinkTab
+          link="/"
+          icon={RiUserVoiceLine}
+          title="Flood Information"
+          isActive={selectedTab === ETabName.FLOOD_INFORMATION}
+          onSelect={() => setSelectedTab(ETabName.FLOOD_INFORMATION)}
+        />
       </div>
     </div>
   );
