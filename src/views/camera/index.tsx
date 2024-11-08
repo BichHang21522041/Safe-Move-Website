@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { CustomButton } from "../../components/CustomButton";
 import { SearchBar } from "../../components/SearchBar";
 import { SelectBar } from "../../components/SelectBar";
@@ -10,6 +11,11 @@ const Dashboard = () => {
     { value: EStatus.ACTIVE, label: "Active" },
     { value: EStatus.INACTIVE, label: "Inactive" },
   ];
+  const [filter, setFilter] = useState<EStatus>(EStatus.ACTIVE);
+  const buttonTitle = useMemo(
+    () => (filter === EStatus.ACTIVE ? "Inactivate" : "Activate"),
+    [filter]
+  );
   return (
     <div
       style={{
@@ -32,9 +38,13 @@ const Dashboard = () => {
       >
         <div style={{ flexDirection: "row", gap: 10, display: "flex" }}>
           <SearchBar />
-          <SelectBar options={data} defaultValue={EStatus.ACTIVE} />
+          <SelectBar
+            options={data}
+            defaultValue={EStatus.ACTIVE}
+            setSelectedValue={setFilter}
+          />
         </div>
-        <CustomButton title="Inactivate" />
+        <CustomButton title={buttonTitle} />
       </div>
       <div
         style={{
@@ -44,7 +54,7 @@ const Dashboard = () => {
           overflow: "hidden",
         }}
       >
-        <CustomTable />
+        <CustomTable status={filter} />
       </div>
     </div>
   );

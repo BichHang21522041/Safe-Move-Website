@@ -7,6 +7,7 @@ import { EStatus } from "../utils/enum";
 import { Size } from "../utils/size";
 import { StatusTag } from "../views/camera/components/StatusTag";
 import "./index.css";
+import { MdOutlineAddBox } from "react-icons/md";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -19,7 +20,7 @@ interface DataType {
   status: EStatus;
 }
 
-const columns: TableColumnsType<DataType> = [
+const columns = (status: EStatus): TableColumnsType<DataType> => [
   { title: "Username", dataIndex: "username", align: "center" },
   { title: "Location", dataIndex: "location", align: "center" },
   { title: "Date", dataIndex: "date", align: "center" },
@@ -36,7 +37,12 @@ const columns: TableColumnsType<DataType> = [
   {
     title: "Action",
     dataIndex: "action",
-    render: () => <CiCircleRemove size={Size.L} />,
+    render: () =>
+      status === EStatus.ACTIVE ? (
+        <CiCircleRemove size={Size.L} />
+      ) : (
+        <MdOutlineAddBox size={Size.L} />
+      ),
     align: "center",
   },
 ];
@@ -51,7 +57,17 @@ const dataSource = Array.from<DataType>({ length: 46 }).map<DataType>(
   })
 );
 
-const CustomTable: React.FC = () => {
+const inactiveDataSource = Array.from<DataType>({ length: 46 }).map<DataType>(
+  (_, i) => ({
+    key: i,
+    username: `User ${i}`,
+    location: `Location ${i}`,
+    date: `03/11/2024`,
+    status: EStatus.INACTIVE,
+  })
+);
+
+const CustomTable = ({ status }: { status: EStatus }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
@@ -119,8 +135,10 @@ const CustomTable: React.FC = () => {
         <div style={{ overflow: "hidden" }}>
           <Table<DataType>
             rowSelection={rowSelection}
-            columns={columns}
-            dataSource={dataSource}
+            columns={columns(status)}
+            dataSource={
+              status === EStatus.ACTIVE ? dataSource : inactiveDataSource
+            }
             pagination={{ position: ["bottomCenter"] }}
             scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
           />

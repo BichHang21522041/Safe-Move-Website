@@ -55,7 +55,7 @@ export const Sidebar = (props: {
           onSelect={() => setSelectedTab(ETabName.CAMERA)}
         />
         <LinkTab
-          link="/"
+          link="/map"
           icon={IoMapOutline}
           title="Map"
           isActive={selectedTab === ETabName.MAP}
