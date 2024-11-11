@@ -23,7 +23,6 @@ const AuthLayout: React.FC = () => {
     ) {
       setErrorMessage("Email or Password is incorrect. Please retry it!");
     } else setIsAuthenticated(true);
-    console.log("Form Data:", data);
   };
 
   return (

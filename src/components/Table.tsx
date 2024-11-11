@@ -1,91 +1,75 @@
 import type { TableColumnsType, TableProps } from "antd";
-import { ConfigProvider, Table } from "antd";
+import { ConfigProvider, Modal, Table } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { CiCircleRemove } from "react-icons/ci";
+import { MdOutlineAddBox } from "react-icons/md";
 import { Colors } from "../utils/colors";
 import { EStatus } from "../utils/enum";
 import { Size } from "../utils/size";
+import { Camera } from "../utils/types";
 import { StatusTag } from "../views/camera/components/StatusTag";
 import "./index.css";
-import { MdOutlineAddBox } from "react-icons/md";
 
-type TableRowSelection<T extends object = object> =
-  TableProps<T>["rowSelection"];
+type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"];
 
-interface DataType {
-  key: React.Key;
-  username: string;
-  location: string;
-  date: string;
-  status: EStatus;
-}
-
-const columns = (status: EStatus): TableColumnsType<DataType> => [
-  { title: "Username", dataIndex: "username", align: "center" },
-  { title: "Location", dataIndex: "location", align: "center" },
-  { title: "Date", dataIndex: "date", align: "center" },
+const columns = (
+  status: EStatus,
+  handleOpenModal: (id: string) => void
+): TableColumnsType<Camera> => [
+  { title: "ID", dataIndex: "id", align: "center" },
+  { title: "Name", dataIndex: "name", align: "center" },
+  { title: "District", dataIndex: "dist", align: "center" },
+  { title: "Last Modified", dataIndex: "lastModified", align: "center" },
   {
     title: "Status",
-    dataIndex: "status",
-    render: (status: EStatus) => (
+    dataIndex: "isEnabled",
+    render: (isEnabled: boolean) => (
       <span>
-        <StatusTag status={status} />
+        <StatusTag isEnabled={isEnabled} />
       </span>
     ),
     align: "center",
   },
   {
     title: "Action",
-    dataIndex: "action",
-    render: () =>
+    render: (_: any, record: Camera) => (
       status === EStatus.ACTIVE ? (
-        <CiCircleRemove size={Size.L} />
+        <CiCircleRemove size={Size.L} onClick={() => handleOpenModal(record.id)} />
       ) : (
-        <MdOutlineAddBox size={Size.L} />
-      ),
+        <MdOutlineAddBox size={Size.L} onClick={() => handleOpenModal(record.id)} />
+      )
+    ),
     align: "center",
   },
 ];
 
-const dataSource = Array.from<DataType>({ length: 46 }).map<DataType>(
-  (_, i) => ({
-    key: i,
-    username: `User ${i}`,
-    location: `Location ${i}`,
-    date: `03/11/2024`,
-    status: EStatus.ACTIVE,
-  })
-);
-
-const inactiveDataSource = Array.from<DataType>({ length: 46 }).map<DataType>(
-  (_, i) => ({
-    key: i,
-    username: `User ${i}`,
-    location: `Location ${i}`,
-    date: `03/11/2024`,
-    status: EStatus.INACTIVE,
-  })
-);
-
-const CustomTable = ({ status }: { status: EStatus }) => {
+const CustomTable = ({
+  status,
+  setSelectedList,
+  cameraList,
+  handleActionClick
+}: {
+  status: EStatus;
+  setSelectedList: (val: string[]) => void;
+  cameraList: Camera[];
+  handleActionClick: (id: string) => void;
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
-  // const headerRef = useRef<HTMLDivElement | null>(null);
-  // const [headerHeight, setHeaderHeight] = useState<number>(0);
+  const [data, setData] = useState<Camera[]>([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
 
-  // useEffect(() => {
-  //   if (headerRef.current) {
-  //     console.log("header height", headerRef.current.clientHeight);
-  //     setHeaderHeight(headerRef.current.clientHeight);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setData(cameraList);
+    setSelectedRowKeys([]);
+  }, [cameraList]);
 
   useEffect(() => {
     if (divRef.current) {
       const height = divRef.current.clientHeight;
       setDivHeight(height);
-      console.log("Div Height:", height);
     }
     const handleResize = () => {
       if (divRef.current) {
@@ -99,13 +83,27 @@ const CustomTable = ({ status }: { status: EStatus }) => {
   }, []);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+    const stringSelectedRowKeys = newSelectedRowKeys.map(key => key.toString());
+    setSelectedList(stringSelectedRowKeys);
   };
 
-  const rowSelection: TableRowSelection<DataType> = {
+  const rowSelection: TableRowSelection<Camera> = {
     selectedRowKeys,
     onChange: onSelectChange,
+  };
+
+  const handleOpenModal = (id: string) => {
+    setSelectedCameraId(id);
+    setIsOpenModal(true);
+  };
+
+  const handleConfirmAction = () => {
+    if (selectedCameraId) {
+      handleActionClick(selectedCameraId);
+    }
+    setIsOpenModal(false);
+    setSelectedCameraId(null);
   };
 
   return (
@@ -129,20 +127,32 @@ const CustomTable = ({ status }: { status: EStatus }) => {
           },
           token: {
             colorPrimary: Colors.kingTide,
+            colorPrimaryHover: Colors.kingTide,
           },
         }}
       >
-        <div style={{ overflow: "hidden" }}>
-          <Table<DataType>
-            rowSelection={rowSelection}
-            columns={columns(status)}
-            dataSource={
-              status === EStatus.ACTIVE ? dataSource : inactiveDataSource
-            }
-            pagination={{ position: ["bottomCenter"] }}
-            scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
-          />
-        </div>
+        <Table<Camera>
+          rowSelection={rowSelection}
+          columns={columns(status, handleOpenModal)}
+          dataSource={data}
+          pagination={{ position: ["bottomCenter"] }}
+          scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
+          rowKey="id"
+        />
+        <Modal
+          open={isOpenModal}
+          onOk={handleConfirmAction}
+          onCancel={() => setIsOpenModal(false)}
+          centered
+          width={400}
+          closable={false}
+          okText= "Confirm"
+          okButtonProps={{ style: { backgroundColor: Colors.kingTide } }}
+        >
+          <div style={{ fontSize: Size.M }}>
+            Are you sure you want to {status === EStatus.ACTIVE ? "deactivate" : "activate"} this camera?
+          </div>
+        </Modal>
       </ConfigProvider>
     </div>
   );

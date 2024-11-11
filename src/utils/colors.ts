@@ -21,4 +21,5 @@ export const Colors = {
   kaitokeGreen: "#22543D",
   wePeep: "#FED7D7",
   loverKiss: "#8F3A3A",
+  disabledColor: 'rgba(0, 0, 0, 0.04)'
 };
