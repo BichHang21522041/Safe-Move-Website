@@ -7,7 +7,7 @@ import RedMarkerIcon from "../../images/redMarker.png";
 import { SelectBar } from "../../components/SelectBar";
 import { EStatus } from "../../utils/enum";
 import { getListCameraService } from "../../services/camera.service";
-import { Camera } from "../../utils/types";
+import { ICamera } from "../../utils/types";
 import { SearchBar } from "../../components/SearchBar";
 
 // interface Camera {
@@ -31,7 +31,7 @@ const CAMERA_API_URL =
   "https://api.notis.vn/v4/cameras/bybbox?lat1=11.160767&lng1=106.554166&lat2=9.45&lng2=128.99999";
 
 const CameraMap: React.FC = () => {
-  const [cameras, setCameras] = useState<Camera[]>([]);
+  const [cameras, setCameras] = useState<ICamera[]>([]);
   const [timestamp, setTimestamp] = useState(Date.now());
   const data = [
     { value: "", label: "All" },
@@ -101,7 +101,7 @@ const CameraMap: React.FC = () => {
         gap: 15,
       }}
     >
-      <div style={{display: 'flex', flexDirection: 'row', gap: 10}}>
+      <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
         {" "}
         <SearchBar onSearchChange={onSearchChange} />
         <SelectBar

@@ -10,6 +10,7 @@ import Map from "./views/map";
 import SignIn from "./views/signIn";
 import { MdOutlineDashboard } from "react-icons/md";
 import { IoMapOutline } from "react-icons/io5";
+import FloodInformation from "./views/flood-information";
 
 export interface IRoute {
   name: string;
@@ -40,6 +41,7 @@ function MainRoutes() {
       <Route path="/" element={<Dashboard />} />
       <Route path="/map" element={<Map />} />
       <Route path="/sign-in" element={<SignIn />} />
+      <Route path="/flood-information" element={<FloodInformation />} />
     </Routing>
   );
 }

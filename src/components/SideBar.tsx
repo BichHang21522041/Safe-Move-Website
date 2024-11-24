@@ -62,7 +62,7 @@ export const Sidebar = (props: {
           onSelect={() => setSelectedTab(ETabName.MAP)}
         />
         <LinkTab
-          link="/"
+          link="/flood-information"
           icon={RiUserVoiceLine}
           title="Flood Information"
           isActive={selectedTab === ETabName.FLOOD_INFORMATION}

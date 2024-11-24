@@ -1,3 +1,5 @@
+import { EInformationStatus, EStatus } from "./enum";
+
 export interface ISelectValue {
   value: string;
   label: string;
@@ -8,7 +10,7 @@ export interface Coordinates {
   coordinates: number[];
 }
 
-export interface Camera {
+export interface ICamera {
   _id: string;
   id: string;
   name: string;
@@ -19,5 +21,16 @@ export interface Camera {
   angle?: number;
   liveviewUrl: string;
   isEnabled: boolean;
-  lastModified: Date; 
+  lastModified: Date;
+}
+
+export interface IFloodInformation {
+  _id: string;
+  userName: string;
+  location: Coordinates;
+  date: Date;
+  locationName: string;
+  status: EInformationStatus;
+  floodLevel: number;
+  url: string;
 }

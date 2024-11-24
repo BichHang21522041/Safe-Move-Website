@@ -1,11 +1,11 @@
-import { Camera } from "../utils/types";
+import { ICamera } from "../utils/types";
 
 const API_BASE_URL = "https://camera-service.onrender.com/api/v1/cameras";
 
 export const getListCameraService = async ({
   isEnabled,
   search,
-}: { isEnabled?: boolean; search?: string } = {}): Promise<Camera[]> => {
+}: { isEnabled?: boolean; search?: string } = {}): Promise<ICamera[]> => {
   const url = new URL(`${API_BASE_URL}/cameras`);
 
   if (isEnabled !== undefined) {
@@ -25,7 +25,7 @@ export const getListCameraService = async ({
 
 export const getCameraByIdService = async (
   cameraId: string
-): Promise<Camera> => {
+): Promise<ICamera> => {
   const response = await fetch(`${API_BASE_URL}/cameras/${cameraId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch camera by ID");

@@ -1,76 +1,58 @@
 import type { TableColumnsType, TableProps } from "antd";
-import { ConfigProvider, Modal, Table } from "antd";
+import { ConfigProvider, Table, Tag } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { CiCircleRemove } from "react-icons/ci";
-import { MdOutlineAddBox } from "react-icons/md";
-import { Colors } from "../utils/colors";
-import { EStatus } from "../utils/enum";
-import { Size } from "../utils/size";
-import { ICamera } from "../utils/types";
-import { StatusTag } from "../views/camera/components/StatusTag";
-import "./index.css";
+import { Colors } from "../../../utils/colors";
+import { EInformationStatus } from "../../../utils/enum";
+import { IFloodInformation } from "../../../utils/types";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
 
-const columns = (
-  status: EStatus,
-  handleOpenModal: (id: string) => void
-): TableColumnsType<ICamera> => [
-  { title: "ID", dataIndex: "id", align: "center" },
-  { title: "Name", dataIndex: "name", align: "center" },
-  { title: "District", dataIndex: "dist", align: "center" },
-  { title: "Last Modified", dataIndex: "lastModified", align: "center" },
+const columns: TableColumnsType<IFloodInformation> = [
+  { title: "ID", dataIndex: "_id", align: "center" },
+  { title: "Username", dataIndex: "userName", align: "center" },
+  { title: "Location", dataIndex: "locationName", align: "center" },
+  { title: "Created At", dataIndex: "date", align: "center" },
   {
     title: "Status",
-    dataIndex: "isEnabled",
-    render: (isEnabled: boolean) => (
-      <span>
-        <StatusTag isEnabled={isEnabled} />
-      </span>
+    dataIndex: "status",
+    render: (status: EInformationStatus) => (
+      <div>
+        {status === EInformationStatus.PENDING ? (
+          <Tag color="lightGrey">Pending</Tag>
+        ) : status === EInformationStatus.APPROVED ? (
+          <Tag color="green">Approved</Tag>
+        ) : (
+          <Tag color="red">Declined</Tag>
+        )}
+      </div>
     ),
-    align: "center",
-  },
-  {
-    title: "Action",
-    render: (_: any, record: ICamera) =>
-      status === EStatus.ACTIVE ? (
-        <CiCircleRemove
-          size={Size.L}
-          onClick={() => handleOpenModal(record.id)}
-        />
-      ) : (
-        <MdOutlineAddBox
-          size={Size.L}
-          onClick={() => handleOpenModal(record.id)}
-        />
-      ),
     align: "center",
   },
 ];
 
-const CustomTable = ({
+const FloodInformationTable = ({
   status,
   setSelectedList,
-  cameraList,
+  list,
   handleActionClick,
 }: {
-  status: EStatus;
+  status: EInformationStatus;
   setSelectedList: (val: string[]) => void;
-  cameraList: ICamera[];
+  list: IFloodInformation[];
   handleActionClick: (id: string) => void;
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
-  const [data, setData] = useState<ICamera[]>([]);
+  const [data, setData] = useState<IFloodInformation[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
 
   useEffect(() => {
-    setData(cameraList);
+    setData(list);
     setSelectedRowKeys([]);
-  }, [cameraList]);
+  }, [list]);
 
   useEffect(() => {
     if (divRef.current) {
@@ -96,7 +78,7 @@ const CustomTable = ({
     setSelectedList(stringSelectedRowKeys);
   };
 
-  const rowSelection: TableRowSelection<ICamera> = {
+  const rowSelection: TableRowSelection<IFloodInformation> = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
@@ -139,15 +121,15 @@ const CustomTable = ({
           },
         }}
       >
-        <Table<ICamera>
+        <Table<IFloodInformation>
           rowSelection={rowSelection}
-          columns={columns(status, handleOpenModal)}
+          columns={columns}
           dataSource={data}
           pagination={{ position: ["bottomCenter"] }}
           scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
-          rowKey="id"
+          rowKey="_id"
         />
-        <Modal
+        {/* <Modal
           open={isOpenModal}
           onOk={handleConfirmAction}
           onCancel={() => setIsOpenModal(false)}
@@ -161,10 +143,10 @@ const CustomTable = ({
             Are you sure you want to{" "}
             {status === EStatus.ACTIVE ? "deactivate" : "activate"} this camera?
           </div>
-        </Modal>
+        </Modal> */}
       </ConfigProvider>
     </div>
   );
 };
 
-export default CustomTable;
+export default FloodInformationTable;

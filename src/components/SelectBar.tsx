@@ -1,16 +1,15 @@
 import { ConfigProvider, Select } from "antd";
 import { ISelectValue } from "../utils/types";
 import { Colors } from "../utils/colors";
-import { EStatus } from "../utils/enum";
 
-export const SelectBar = ({
+export const SelectBar = <T extends string>({
   defaultValue,
   options,
   setSelectedValue,
 }: {
-  defaultValue: EStatus;
+  defaultValue: T;
   options: ISelectValue[];
-  setSelectedValue: (val: EStatus) => void;
+  setSelectedValue: (val: T) => void;
 }) => {
   return (
     <ConfigProvider
@@ -27,7 +26,7 @@ export const SelectBar = ({
       <Select
         defaultValue={defaultValue}
         style={{ width: 120 }}
-        onChange={(e: EStatus) => setSelectedValue(e)}
+        onChange={(value: T) => setSelectedValue(value)} // Use generic type T here
         options={options}
       />
     </ConfigProvider>

@@ -3,10 +3,13 @@ import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
 import { SearchBar } from "../../components/SearchBar";
 import { SelectBar } from "../../components/SelectBar";
 import CustomTable from "../../components/Table";
-import { getListCameraService, updateCameraStatusService } from "../../services/camera.service";
+import {
+  getListCameraService,
+  updateCameraStatusService,
+} from "../../services/camera.service";
 import { EStatus } from "../../utils/enum";
 import { Size } from "../../utils/size";
-import { Camera } from "../../utils/types";
+import { ICamera } from "../../utils/types";
 
 const Dashboard = () => {
   const data = [
@@ -14,19 +17,22 @@ const Dashboard = () => {
     { value: EStatus.INACTIVE, label: "Inactive" },
   ];
   const [filter, setFilter] = useState<EStatus>(EStatus.ACTIVE);
-  const [search, setSearch] = useState("")
+  const [search, setSearch] = useState("");
   const buttonTitle = useMemo(
     () => (filter === EStatus.ACTIVE ? "Inactivate" : "Activate"),
     [filter]
   );
-  const [selectedList, setSelectedList] = useState<string[]>([])
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [list, setList] = useState<Camera[]>([])
+  const [selectedList, setSelectedList] = useState<string[]>([]);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [list, setList] = useState<ICamera[]>([]);
 
   const getCameraList = async () => {
     try {
-      const cameraList = await getListCameraService({isEnabled: filter === EStatus.ACTIVE, search: search});
-      setList(cameraList)
+      const cameraList = await getListCameraService({
+        isEnabled: filter === EStatus.ACTIVE,
+        search: search,
+      });
+      setList(cameraList);
       return data;
     } catch (error) {
       console.error("Error fetching camera list:", error);
@@ -35,42 +41,44 @@ const Dashboard = () => {
   };
 
   const handleOk = async () => {
-  try {
-      await updateCameraStatusService(selectedList,filter !== EStatus.ACTIVE)
-      getCameraList()
+    try {
+      await updateCameraStatusService(selectedList, filter !== EStatus.ACTIVE);
+      getCameraList();
     } catch (e) {
-      console.log('error update camera status service', e)
-    } finally {      
+      console.log("error update camera status service", e);
+    } finally {
       setIsOpenModal(false);
-      setSelectedList([])
+      setSelectedList([]);
     }
   };
 
   const updateCameraStatus = async (id: string) => {
     try {
-      await updateCameraStatusService([id], filter !== EStatus.ACTIVE)
-      getCameraList()
-      } catch (e) {
-        console.log('error update camera status service', e)
-      } finally {      
-        setSelectedList([])
+      await updateCameraStatusService([id], filter !== EStatus.ACTIVE);
+      getCameraList();
+    } catch (e) {
+      console.log("error update camera status service", e);
+    } finally {
+      setSelectedList([]);
     }
-    };
-
-  const handleActionClick = (id: string) => {
-    updateCameraStatus(id)
   };
 
-  useEffect (()  => {
-    getCameraList()
-  }, [filter, search])
+  const handleActionClick = (id: string) => {
+    updateCameraStatus(id);
+  };
+
+  useEffect(() => {
+    getCameraList();
+  }, [filter, search]);
 
   const isDisabled = useMemo(() => {
     return selectedList.length === 0;
-  }, [selectedList])
+  }, [selectedList]);
 
-  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setSearch(e.target.value)
+  const onSearchChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -94,14 +102,20 @@ const Dashboard = () => {
         }}
       >
         <div style={{ flexDirection: "row", gap: 10, display: "flex" }}>
-          <SearchBar onSearchChange={onSearchChange}/>
-          <SelectBar
+          <SearchBar onSearchChange={onSearchChange} />
+          <SelectBar<EStatus>
             options={data}
             defaultValue={EStatus.ACTIVE}
             setSelectedValue={setFilter}
           />
         </div>
-        <ConfirmActionModal title={buttonTitle} setIsModalOpen={setIsOpenModal} isModalOpen={isOpenModal} handleOk={handleOk} isDisabled={isDisabled}/>
+        <ConfirmActionModal
+          title={buttonTitle}
+          setIsModalOpen={setIsOpenModal}
+          isModalOpen={isOpenModal}
+          handleOk={handleOk}
+          isDisabled={isDisabled}
+        />
       </div>
       <div
         style={{
@@ -111,7 +125,12 @@ const Dashboard = () => {
           overflow: "hidden",
         }}
       >
-        <CustomTable status={filter} setSelectedList={setSelectedList} cameraList={list} handleActionClick={handleActionClick}/>
+        <CustomTable
+          status={filter}
+          setSelectedList={setSelectedList}
+          cameraList={list}
+          handleActionClick={handleActionClick}
+        />
       </div>
     </div>
   );
