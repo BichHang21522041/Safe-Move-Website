@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Colors } from "../../../utils/colors";
 import { EInformationStatus } from "../../../utils/enum";
 import { IFloodInformation } from "../../../utils/types";
+import FloodInformationDetail from "./FloodInformationDetail";
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>["rowSelection"];
@@ -42,16 +43,14 @@ const FloodInformationTable = ({
   list: IFloodInformation[];
   handleActionClick: (id: string) => void;
 }) => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
   const [data, setData] = useState<IFloodInformation[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
+  const [selectedRow, setSeletedRow] = useState<IFloodInformation>()
 
   useEffect(() => {
     setData(list);
-    setSelectedRowKeys([]);
   }, [list]);
 
   useEffect(() => {
@@ -69,32 +68,6 @@ const FloodInformationTable = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys);
-    const stringSelectedRowKeys = newSelectedRowKeys.map((key) =>
-      key.toString()
-    );
-    setSelectedList(stringSelectedRowKeys);
-  };
-
-  const rowSelection: TableRowSelection<IFloodInformation> = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
-
-  const handleOpenModal = (id: string) => {
-    setSelectedCameraId(id);
-    setIsOpenModal(true);
-  };
-
-  const handleConfirmAction = () => {
-    if (selectedCameraId) {
-      handleActionClick(selectedCameraId);
-    }
-    setIsOpenModal(false);
-    setSelectedCameraId(null);
-  };
 
   return (
     <div
@@ -122,29 +95,21 @@ const FloodInformationTable = ({
         }}
       >
         <Table<IFloodInformation>
-          rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
           pagination={{ position: ["bottomCenter"] }}
           scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
           rowKey="_id"
+          onRow={(record) => ({
+            onClick: () => {
+              setIsOpenModal(true)
+              setSeletedRow(record)
+            }
+          })}
         />
-        {/* <Modal
-          open={isOpenModal}
-          onOk={handleConfirmAction}
-          onCancel={() => setIsOpenModal(false)}
-          centered
-          width={400}
-          closable={false}
-          okText="Confirm"
-          okButtonProps={{ style: { backgroundColor: Colors.kingTide } }}
-        >
-          <div style={{ fontSize: Size.M }}>
-            Are you sure you want to{" "}
-            {status === EStatus.ACTIVE ? "deactivate" : "activate"} this camera?
-          </div>
-        </Modal> */}
       </ConfigProvider>
+      <FloodInformationDetail isOpen={isOpenModal} setIsOpen={setIsOpenModal} data={selectedRow}/>
+
     </div>
   );
 };

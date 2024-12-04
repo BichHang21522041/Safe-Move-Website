@@ -27,10 +27,14 @@ export interface ICamera {
 export interface IFloodInformation {
   _id: string;
   userName: string;
-  location: Coordinates;
+  userId: string;
+  longtitude: number;
+  latitude: number;
   date: Date;
   locationName: string;
   status: EInformationStatus;
   floodLevel: number;
   url: string;
+  modelDetectFloodLevel?: number;
+  message?: string;
 }

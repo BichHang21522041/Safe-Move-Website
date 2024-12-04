@@ -1,17 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
-import { ConfirmActionModal } from "../../components/modals/ConfirmActionModal";
+import { useEffect, useState } from "react";
 import { SearchBar } from "../../components/SearchBar";
 import { SelectBar } from "../../components/SelectBar";
-import CustomTable from "../../components/Table";
-import {
-  getListCameraService,
-  updateCameraStatusService,
-} from "../../services/camera.service";
-import { EInformationStatus, EStatus } from "../../utils/enum";
-import { Size } from "../../utils/size";
-import { ICamera, IFloodInformation } from "../../utils/types";
 import { getListFloodInformationService } from "../../services/flood-information.service";
+import { EInformationStatus } from "../../utils/enum";
+import { Size } from "../../utils/size";
+import { IFloodInformation } from "../../utils/types";
 import FloodInformationTable from "./components/Table";
+import FloodInformationDetail from "./components/FloodInformationDetail";
 
 const FloodInformation = () => {
   const data = [
@@ -45,7 +40,7 @@ const FloodInformation = () => {
 
   useEffect(() => {
     getFloodInformationList();
-  }, [filter, search]);
+  }, [filter, search, isOpenModal]);
 
   const onSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
