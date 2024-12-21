@@ -5,9 +5,7 @@ import { Colors } from "../../../utils/colors";
 import { EInformationStatus } from "../../../utils/enum";
 import { IFloodInformation } from "../../../utils/types";
 import FloodInformationDetail from "./FloodInformationDetail";
-
-type TableRowSelection<T extends object = object> =
-  TableProps<T>["rowSelection"];
+import { getListFloodInformationService } from "../../../services/flood-information.service";
 
 const columns: TableColumnsType<IFloodInformation> = [
   { title: "ID", dataIndex: "_id", align: "center" },
@@ -33,21 +31,36 @@ const columns: TableColumnsType<IFloodInformation> = [
 ];
 
 const FloodInformationTable = ({
-  status,
-  setSelectedList,
-  list,
-  handleActionClick,
+  filter,
+  search,
 }: {
-  status: EInformationStatus;
-  setSelectedList: (val: string[]) => void;
-  list: IFloodInformation[];
-  handleActionClick: (id: string) => void;
+  filter?: EInformationStatus;
+  search?: string
 }) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
   const [data, setData] = useState<IFloodInformation[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [selectedRow, setSeletedRow] = useState<IFloodInformation>()
+  const [selectedRow, setSeletedRow] = useState<IFloodInformation>();
+  const [list, setList] = useState<IFloodInformation[]>([])
+
+  const getFloodInformationList = async () => {
+    try {
+      const floodInformationList = await getListFloodInformationService({
+        status: filter,
+        search: search,
+      });
+      setList(floodInformationList);
+      return data;
+    } catch (error) {
+      console.error("Error fetching flood information list:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    getFloodInformationList();
+  }, [filter, search, isOpenModal]);
 
   useEffect(() => {
     setData(list);
@@ -102,14 +115,17 @@ const FloodInformationTable = ({
           rowKey="_id"
           onRow={(record) => ({
             onClick: () => {
-              setIsOpenModal(true)
-              setSeletedRow(record)
-            }
+              setIsOpenModal(true);
+              setSeletedRow(record);
+            },
           })}
         />
       </ConfigProvider>
-      <FloodInformationDetail isOpen={isOpenModal} setIsOpen={setIsOpenModal} data={selectedRow}/>
-
+      <FloodInformationDetail
+        isOpen={isOpenModal}
+        setIsOpen={setIsOpenModal}
+        data={selectedRow}
+      />
     </div>
   );
 };

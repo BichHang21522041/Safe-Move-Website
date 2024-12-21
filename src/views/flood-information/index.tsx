@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SearchBar } from "../../components/SearchBar";
 import { SelectBar } from "../../components/SelectBar";
-import { getListFloodInformationService } from "../../services/flood-information.service";
 import { EInformationStatus } from "../../utils/enum";
 import { Size } from "../../utils/size";
-import { IFloodInformation } from "../../utils/types";
 import FloodInformationTable from "./components/Table";
-import FloodInformationDetail from "./components/FloodInformationDetail";
+import { useGlobalContext } from "../../utils/globalContext";
 
 const FloodInformation = () => {
+  const { setTitle } = useGlobalContext();
+  setTitle('Flood Information List')
   const data = [
     { value: EInformationStatus.ALL, label: "All" },
     { value: EInformationStatus.APPROVED, label: "Approved" },
@@ -19,28 +19,6 @@ const FloodInformation = () => {
     EInformationStatus.ALL
   );
   const [search, setSearch] = useState("");
-
-  const [selectedList, setSelectedList] = useState<string[]>([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [list, setList] = useState<IFloodInformation[]>([]);
-
-  const getFloodInformationList = async () => {
-    try {
-      const floodInformationList = await getListFloodInformationService({
-        status: filter,
-        search: search,
-      });
-      setList(floodInformationList);
-      return data;
-    } catch (error) {
-      console.error("Error fetching flood information list:", error);
-      return [];
-    }
-  };
-
-  useEffect(() => {
-    getFloodInformationList();
-  }, [filter, search, isOpenModal]);
 
   const onSearchChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -80,13 +58,6 @@ const FloodInformation = () => {
             setSelectedValue={setFilter}
           />
         </div>
-        {/* <ConfirmActionModal
-          title={buttonTitle}
-          setIsModalOpen={setIsOpenModal}
-          isModalOpen={isOpenModal}
-          handleOk={handleOk}
-          isDisabled={isDisabled}
-        /> */}
       </div>
       <div
         style={{
@@ -96,12 +67,7 @@ const FloodInformation = () => {
           overflow: "hidden",
         }}
       >
-        <FloodInformationTable
-          status={filter}
-          setSelectedList={setSelectedList}
-          list={list}
-          handleActionClick={() => {}}
-        />
+        <FloodInformationTable filter={filter} search={search} />
       </div>
     </div>
   );

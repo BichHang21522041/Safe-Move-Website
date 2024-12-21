@@ -1,6 +1,6 @@
 import { ICamera } from "../utils/types";
 
-const API_BASE_URL = "https://camera-service.onrender.com/api/v1/cameras";
+const API_BASE_URL = "https://camera-service.onrender.com";
 
 export const getListCameraService = async ({
   isEnabled,

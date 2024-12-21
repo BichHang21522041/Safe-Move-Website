@@ -7,6 +7,7 @@ export enum ETabName {
 export enum EStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",
+  ALL = 'all'
 }
 
 export enum EInformationStatus {

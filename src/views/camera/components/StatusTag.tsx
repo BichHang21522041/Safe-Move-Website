@@ -9,7 +9,7 @@ export const StatusTag = ({ isEnabled }: { isEnabled: boolean }) => {
       backgroundColor: Colors.pickFord,
       padding: "5px 10px",
       borderRadius: "5px",
-      display: "inline-block", 
+      display: "inline-block",
       whiteSpace: "nowrap",
     },
     [EStatus.INACTIVE]: {
@@ -21,14 +21,15 @@ export const StatusTag = ({ isEnabled }: { isEnabled: boolean }) => {
       display: "inline-block",
       whiteSpace: "nowrap",
     },
+    [EStatus.ALL]: {},
   };
   const statusText = useMemo(
-    () => (isEnabled  ? "Active" : "Inactive"),
+    () => (isEnabled ? "Active" : "Inactive"),
     [isEnabled]
   );
 
   const status = useMemo(
-    () => (isEnabled  ? EStatus.ACTIVE : EStatus.INACTIVE),
+    () => (isEnabled ? EStatus.ACTIVE : EStatus.INACTIVE),
     [isEnabled]
   );
   return (

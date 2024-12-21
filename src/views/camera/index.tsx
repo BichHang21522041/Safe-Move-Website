@@ -10,8 +10,11 @@ import {
 import { EStatus } from "../../utils/enum";
 import { Size } from "../../utils/size";
 import { ICamera } from "../../utils/types";
+import { useGlobalContext } from "../../utils/globalContext";
 
 const Dashboard = () => {
+  const {setTitle} = useGlobalContext();
+  setTitle('Camera Management')
   const data = [
     { value: EStatus.ACTIVE, label: "Active" },
     { value: EStatus.INACTIVE, label: "Inactive" },
