@@ -1,6 +1,5 @@
 import { ConfigProvider, Image, Modal } from "antd";
-import { useMemo, useState } from "react";
-import { ConfirmActionModal } from "../../../components/modals/ConfirmActionModal";
+import { useMemo } from "react";
 import { updateFloodInformationService } from "../../../services/flood-information.service";
 import { Colors } from "../../../utils/colors";
 import { EInformationStatus } from "../../../utils/enum";
@@ -29,7 +28,7 @@ const FloodInformationDetail = ({ isOpen, setIsOpen, data }: IProps) => {
     setIsOpen(false);
   };
 
-  const handleCancel = async () => {
+  const handleDecline = async () => {
     if (!data || !data._id) return;
     await updateFloodInformationService({
       id: data._id,
@@ -61,7 +60,7 @@ const FloodInformationDetail = ({ isOpen, setIsOpen, data }: IProps) => {
         title="Flood Information Detail"
         open={isOpen}
         onOk={handleOk}
-        onCancel={handleCancel}
+        onCancel={() => setIsOpen(false)}
         okButtonProps={{
           style: {
             display:
@@ -77,6 +76,7 @@ const FloodInformationDetail = ({ isOpen, setIsOpen, data }: IProps) => {
                 ? "inline-block"
                 : "none",
           },
+          onClick: handleDecline
         }}
         okText={"Confirm"}
         cancelText={"Decline"}

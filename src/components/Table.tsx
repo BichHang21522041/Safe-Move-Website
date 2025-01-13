@@ -145,7 +145,7 @@ const CustomTable = ({
           dataSource={data}
           pagination={{ position: ["bottomCenter"] }}
           scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
-          rowKey="id"
+          rowKey="_id"
         />
         <Modal
           open={isOpenModal}
