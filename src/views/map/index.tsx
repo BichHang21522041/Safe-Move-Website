@@ -7,8 +7,9 @@ import RedMarkerIcon from "../../images/redMarker.png";
 import { SelectBar } from "../../components/SelectBar";
 import { EStatus } from "../../utils/enum";
 import { getListCameraService } from "../../services/camera.service";
-import { Camera } from "../../utils/types";
+import { ICamera } from "../../utils/types";
 import { SearchBar } from "../../components/SearchBar";
+import { useGlobalContext } from "../../utils/globalContext";
 
 // interface Camera {
 //   _id: string;
@@ -31,15 +32,17 @@ const CAMERA_API_URL =
   "https://api.notis.vn/v4/cameras/bybbox?lat1=11.160767&lng1=106.554166&lat2=9.45&lng2=128.99999";
 
 const CameraMap: React.FC = () => {
-  const [cameras, setCameras] = useState<Camera[]>([]);
+  const { setTitle } = useGlobalContext();
+  setTitle("Camera Map");
+  const [cameras, setCameras] = useState<ICamera[]>([]);
   const [timestamp, setTimestamp] = useState(Date.now());
   const data = [
-    { value: "", label: "All" },
+    { value: EStatus.ALL, label: "All" },
     { value: EStatus.ACTIVE, label: "Active" },
     { value: EStatus.INACTIVE, label: "Inactive" },
   ];
   const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState<EStatus>(EStatus.ACTIVE);
+  const [filter, setFilter] = useState<EStatus>(EStatus.ALL);
 
   const getCameraList = async () => {
     try {
@@ -101,12 +104,12 @@ const CameraMap: React.FC = () => {
         gap: 15,
       }}
     >
-      <div style={{display: 'flex', flexDirection: 'row', gap: 10}}>
+      <div style={{ display: "flex", flexDirection: "row", gap: 10 }}>
         {" "}
         <SearchBar onSearchChange={onSearchChange} />
         <SelectBar
           options={data}
-          defaultValue={EStatus.ACTIVE}
+          defaultValue={EStatus.ALL}
           setSelectedValue={setFilter}
         />
       </div>

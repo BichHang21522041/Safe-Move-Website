@@ -22,7 +22,11 @@ const AuthLayout: React.FC = () => {
       data.password !== "123456789"
     ) {
       setErrorMessage("Email or Password is incorrect. Please retry it!");
-    } else setIsAuthenticated(true);
+    } else {
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("password", data.password);
+      setIsAuthenticated(true)
+    }
   };
 
   return (

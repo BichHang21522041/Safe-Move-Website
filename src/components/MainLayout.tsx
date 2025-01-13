@@ -1,19 +1,20 @@
 import { CSSProperties } from "react";
 import { Colors } from "../utils/colors";
+import { useGlobalContext } from "../utils/globalContext";
 import { Header } from "./Header";
 import { Sidebar } from "./SideBar";
 
-// Define a simple layout type for flexibility
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const {title} = useGlobalContext()
   return (
     <div style={containerStyle}>
       <Sidebar style={sideBarStyle} />
       <div style={contentStyle}>
-        <Header style={headerStyle} title="Camera Management" />
+        <Header style={headerStyle} title={title} />
         <div style={mainStyle}>{children}</div>
       </div>
     </div>

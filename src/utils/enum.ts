@@ -7,4 +7,12 @@ export enum ETabName {
 export enum EStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",
+  ALL = 'all'
+}
+
+export enum EInformationStatus {
+  PENDING = "Pending",
+  APPROVED = "Approved",
+  DECLINED = "Declined",
+  ALL = "All",
 }

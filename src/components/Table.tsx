@@ -6,16 +6,17 @@ import { MdOutlineAddBox } from "react-icons/md";
 import { Colors } from "../utils/colors";
 import { EStatus } from "../utils/enum";
 import { Size } from "../utils/size";
-import { Camera } from "../utils/types";
+import { ICamera } from "../utils/types";
 import { StatusTag } from "../views/camera/components/StatusTag";
 import "./index.css";
 
-type TableRowSelection<T extends object = object> = TableProps<T>["rowSelection"];
+type TableRowSelection<T extends object = object> =
+  TableProps<T>["rowSelection"];
 
 const columns = (
   status: EStatus,
   handleOpenModal: (id: string) => void
-): TableColumnsType<Camera> => [
+): TableColumnsType<ICamera> => [
   { title: "ID", dataIndex: "id", align: "center" },
   { title: "Name", dataIndex: "name", align: "center" },
   { title: "District", dataIndex: "dist", align: "center" },
@@ -32,13 +33,18 @@ const columns = (
   },
   {
     title: "Action",
-    render: (_: any, record: Camera) => (
+    render: (_: any, record: ICamera) =>
       status === EStatus.ACTIVE ? (
-        <CiCircleRemove size={Size.L} onClick={() => handleOpenModal(record.id)} />
+        <CiCircleRemove
+          size={Size.L}
+          onClick={() => handleOpenModal(record.id)}
+        />
       ) : (
-        <MdOutlineAddBox size={Size.L} onClick={() => handleOpenModal(record.id)} />
-      )
-    ),
+        <MdOutlineAddBox
+          size={Size.L}
+          onClick={() => handleOpenModal(record.id)}
+        />
+      ),
     align: "center",
   },
 ];
@@ -47,17 +53,17 @@ const CustomTable = ({
   status,
   setSelectedList,
   cameraList,
-  handleActionClick
+  handleActionClick,
 }: {
   status: EStatus;
   setSelectedList: (val: string[]) => void;
-  cameraList: Camera[];
+  cameraList: ICamera[];
   handleActionClick: (id: string) => void;
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const divRef = useRef<HTMLDivElement>(null);
   const [divHeight, setDivHeight] = useState<number>(0);
-  const [data, setData] = useState<Camera[]>([]);
+  const [data, setData] = useState<ICamera[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedCameraId, setSelectedCameraId] = useState<string | null>(null);
 
@@ -84,11 +90,13 @@ const CustomTable = ({
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
-    const stringSelectedRowKeys = newSelectedRowKeys.map(key => key.toString());
+    const stringSelectedRowKeys = newSelectedRowKeys.map((key) =>
+      key.toString()
+    );
     setSelectedList(stringSelectedRowKeys);
   };
 
-  const rowSelection: TableRowSelection<Camera> = {
+  const rowSelection: TableRowSelection<ICamera> = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
@@ -131,13 +139,13 @@ const CustomTable = ({
           },
         }}
       >
-        <Table<Camera>
+        <Table<ICamera>
           rowSelection={rowSelection}
           columns={columns(status, handleOpenModal)}
           dataSource={data}
           pagination={{ position: ["bottomCenter"] }}
           scroll={{ y: divHeight - 55 * 2 - 10, x: 600 }}
-          rowKey="id"
+          rowKey="_id"
         />
         <Modal
           open={isOpenModal}
@@ -146,11 +154,12 @@ const CustomTable = ({
           centered
           width={400}
           closable={false}
-          okText= "Confirm"
+          okText="Confirm"
           okButtonProps={{ style: { backgroundColor: Colors.kingTide } }}
         >
           <div style={{ fontSize: Size.M }}>
-            Are you sure you want to {status === EStatus.ACTIVE ? "deactivate" : "activate"} this camera?
+            Are you sure you want to{" "}
+            {status === EStatus.ACTIVE ? "deactivate" : "activate"} this camera?
           </div>
         </Modal>
       </ConfigProvider>
